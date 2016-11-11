@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Pod Git Flow 1</title>
+    <title>Pod Git Flow 2</title>
     <script src="js/gitgraph.min.js"></script>
     <link rel="stylesheet" type="text/css" href="js/gitgraph.css" />
 </head>
 <body>
 <canvas id="gitGraph"></canvas>
 <div style="position: absolute; top: 0; left: 0;">
-<button onclick="horizontalGit()">Horizontal</button>
-<button onclick="verticalGit()">Vertical</button>
+    <button onclick="horizontalGit()">Horizontal</button>
+    <button onclick="verticalGit()">Vertical</button>
 </div>
 </body>
 
@@ -73,7 +73,6 @@
         var podA = develop.branch("Pod-A");
         var podB = develop.branch("Pod-B");
         var podC = develop.branch("Pod-C");
-        var podD = develop.branch("Pod-D");
         develop.commit("sprint work 4");
         develop.commit("sprint work 5");
         develop.commit("sprint work 6");
@@ -87,51 +86,62 @@
         podB.commit("Feature B3");
         podC.commit("Feature C3");
         podA.merge(develop, {tag: "Release 1.1 begin"});
-        develop.commit("Resolve Conflict A");
+        podB.merge(develop);
+        podC.merge(develop);
+        develop.commit("Resolve conflicts A");
+        develop.commit("Resolve conflicts B");
+        develop.commit("Resolve conflicts C");
         develop.merge(release);
         release.commit("bug fix 1");
+        release.commit("bug fix 2");
+        release.commit("bug fix 3");
+        release.merge(develop, {tag:"Release 1.1 with A+B+C"});
+        release.merge(podA);
+        release.merge(podB);
+        release.merge(podC);
         podA.commit("Feature A4");
         podB.commit("Feature B4");
         podC.commit("Feature C4");
-        release.commit("bug fix 2");
-        release.commit("bug fix 3");
-        release.merge(develop, {tag: "Release 1.1 with POD A"});
         podA.commit("Feature A5").commit("Feature A5-fix");
-        develop.merge(podA);
         podA.commit("Feature A6");
         podB.commit("Feature B5");
-        develop.merge(podB);
         podB.commit("Feature B5").commit("Feature B6");
         podC.commit("Feature C5");
-        develop.merge(podC);
         podC.commit("Feature C6").commit("Feature C7").commit("Feature C8");
         podB.merge(develop, {tag: "Release 1.2 begin"});
-        develop.commit("Resolve Conflict B");
+        podA.merge(develop);
+        podC.merge(develop);
         develop.merge(release);
+        release.commit("bug fix 1");
+        release.commit("bug fix 2");
+        release.commit("bug fix 3");
+        release.merge(develop, {tag:"Release 1.2 with A+B+C"});
+        develop.merge(podA);
+        develop.merge(podB);
+        develop.merge(podC);
         podA.commit("Feature A9").commit("Feature A10");
         podB.commit("Feature B9").commit("Feature B10");
         podC.commit("Feature C9");
-        release.commit("bug fix 1");
-        release.merge(develop, {tag: "Release 1.2 with POD B"});
         podA.commit("Feature A11");
-        develop.merge(podA);
         podB.commit("Feature B11").commit("Feature B12");
-        develop.merge(podB);
         podC.commit("Feature C10").commit("Feature C11");
-        develop.merge(podC);
         podC.commit("Feature C12").commit("Feature C13");
         podB.commit("Feature B13").commit("Feature B14");
         podC.commit("Feature C12").commit("Feature C13");
-        podC.merge(develop, {tag: "Release 1.3 begin"});
-        develop.commit("Resolve Conflict C");
+        podA.merge(develop, {tag: "Release 1.3 begin"});
+        podB.merge(develop);
+        podC.merge(develop);
+        develop.commit("Resolve conflicts A");
+        develop.commit("Resolve conflicts B");
+        develop.commit("Resolve conflicts C");
         develop.merge(release);
         release.commit("bug fixes");
-        release.merge(develop, {tag: "Release 1.3 with POD C"});
-        podA.commit("Feature A12");
-        podB.commit("Feature B14");
+        release.merge(develop, {tag: "Release 1.3 with A+B+C"});
         develop.merge(podA);
         develop.merge(podB);
         develop.merge(podC);
+        podA.commit("Feature A12");
+        podB.commit("Feature B14");
         podA.commit("More Features A...").commit("More Features A...").commit("More Features A...");
         podB.commit("More Features B...").commit("More Features B...").commit("More Features B...");
         podC.commit("More Features C...").commit("More Features C...").commit("More Features C...");

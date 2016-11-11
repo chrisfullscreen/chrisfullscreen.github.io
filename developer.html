@@ -127,8 +127,17 @@
         podC.commit("Feature C12").commit("Feature C13");
         podC.merge(develop, {tag:"Release 1.3 begin"});
         develop.merge(release);
+        release.commit("bug fixes");
         podA.commit("Feature A12");
         podB.commit("Feature B14");
+        release.merge(develop, {tag: "Release 1.3 with Pod C"});
+        develop.merge(podA);
+        develop.merge(podB);
+        develop.merge(podC);
+        podA.commit("More A features....").commit("More A features....").commit("More A features....");
+        podB.commit("More B features....").commit("More B features....").commit("More B features....");
+        podC.commit("More C features....").commit("More C features....").commit("More C features....");
+
     }
 
     verticalGit();
