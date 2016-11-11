@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pod Git Flow</title>
+    <script src="js/gitgraph.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="js/gitgraph.css" />
+</head>
+<body>
+<canvas id="gitGraph"></canvas>
+</body>
+
+<script>
+    var graphConfig = new GitGraph.Template({
+        branch: {
+            color: "#000000",
+            lineWidth: 3,
+            spacingX: 60,
+            mergeStyle: "straight",
+            showLabel: true,                // display branch names on graph
+            labelFont: "normal 10pt Arial"
+        },
+        commit: {
+            spacingY: -30,
+            dot: {
+                size: 8,
+                strokeColor: "#000000",
+                strokeWidth: 4
+            },
+            tag: {
+                font: "normal 10pt Arial",
+                color: "yellow"
+            },
+            message: {
+                color: "black",
+                font: "normal 12pt Arial",
+                displayAuthor: false,
+                displayBranch: false,
+                displayHash: false,
+            }
+        },
+        arrow: {
+            size: 8,
+            offset: 3
+        }
+    });
+    var gitgraph = new GitGraph({
+        template: graphConfig,
+        reverseArrow: false,
+        orientation: "vertical",
+//        mode: "compact"
+        branch: {showLabel: true}
+
+    });
+    var master = gitgraph.branch("master");
+    var develop = gitgraph.branch("develop");
+    var release = gitgraph.branch("release");
+    release.commit("initial release");
+    develop.commit("sprint work 1").commit("sprint work 2").commit("sprint work 3");
+    var podA = develop.branch("Pod-A");
+    var podB = develop.branch("Pod-B");
+    var podC = develop.branch("Pod-C");
+    var podD = develop.branch("Pod-D");
+    develop.commit("sprint work 4");
+    develop.commit("sprint work 5");
+    develop.commit("sprint work 6");
+    podA.commit("Feature A1");
+    podB.commit("Feature B1");
+    podC.commit("Feature C1");
+    podA.commit("Feature A2");
+    podB.commit("Feature B2");
+    podC.commit("Feature C2");
+    podA.commit("Feature A3");
+    podB.commit("Feature B3");
+    podC.commit("Feature C3");
+    podA.merge(develop, {tag:"Release 1.1 begin"});
+    develop.merge(release);
+    release.commit("bug fix 1");
+    podA.commit("Feature A4");
+    podB.commit("Feature B4");
+    podC.commit("Feature C4");
+    release.commit("bug fix 2");
+    release.commit("bug fix 3");
+    release.merge(develop, {tag:"Release 1.1 with POD A"});
+    podA.commit("Feature A5").commit("Feature A5-fix");
+    develop.merge(podA);
+    podA.commit("Feature A6");
+    podB.commit("Feature B5");
+    develop.merge(podB);
+    podB.commit("Feature B5").commit("Feature B6");
+    podC.commit("Feature C5");
+    develop.merge(podC);
+    podC.commit("Feature C6").commit("Feature C7").commit("Feature C8");
+    podB.merge(develop, {tag:"Release 1.2 begin"});
+    develop.merge(release);
+    podA.commit("Feature A9").commit("Feature A10");
+    podB.commit("Feature B9").commit("Feature B10");
+    podC.commit("Feature C9");
+    release.commit("bug fix 1");
+    release.merge(develop, {tag:"Release 1.2 with POD B"});
+    podA.commit("Feature A11");
+    develop.merge(podA);
+    podB.commit("Feature B11").commit("Feature B12");
+    develop.merge(podB);
+    podC.commit("Feature C10").commit("Feature C11");
+    develop.merge(podC);
+    podC.commit("Feature C12").commit("Feature C13");
+    podB.commit("Feature B13").commit("Feature B14");
+    podC.commit("Feature C12").commit("Feature C13");
+    podC.merge(develop, {tag:"Release 1.3 begin"});
+    develop.merge(release);
+    podA.commit("Feature A12");
+    podB.commit("Feature B14");
+
+</script>
+</html>
