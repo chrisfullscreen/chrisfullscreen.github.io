@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mobile Release Process</title>
+    <script src="js/gitgraph.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="js/gitgraph.css" />
+</head>
+<body>
+<canvas id="gitGraph"></canvas>
+<div style="position: absolute; top: 0; left: 0;">
+    <button onclick="horizontalGit()">Horizontal</button>
+    <button onclick="verticalGit()">Vertical</button>
+</div>
+</body>
+
+<script>
+    var graphConfig = new GitGraph.Template({
+        branch: {
+            color: "#000000",
+            lineWidth: 3,
+            spacingX: 60,
+            mergeStyle: "straight",
+            showLabel: true,                // display branch names on graph
+            labelFont: "normal 10pt Arial"
+        },
+        commit: {
+            spacingY: -30,
+            dot: {
+                size: 8,
+                strokeColor: "#000000",
+                strokeWidth: 4
+            },
+            tag: {
+                font: "normal 10pt Arial",
+                color: "yellow"
+            },
+            message: {
+                color: "black",
+                font: "normal 12pt Arial",
+                displayAuthor: false,
+                displayBranch: false,
+                displayHash: false,
+            }
+        },
+        arrow: {
+            size: 8,
+            offset: 3
+        }
+    });
+    function horizontalGit() {
+        drawGit("horizontal");
+    }
+
+    function verticalGit() {
+        drawGit("vertical");
+    }
+
+    function drawGit(direction) {
+        var gitgraph = new GitGraph({
+            template: graphConfig,
+            reverseArrow: false,
+            orientation: direction,
+            mode: direction == "horizontal" ? "compact" : "extended",
+            branch: {showLabel: true}
+
+        });
+        var master = gitgraph.branch("master");
+        var release = master.branch("release");
+        master.commit("project start");
+        release.commit("initial release");
+        release.merge(master);
+        var develop = master.branch("develop");
+        develop.commit("sprint work 1").commit("sprint work 2").commit("sprint work 3");
+        var feature1 = develop.branch("Feature A");
+        var feature2 = develop.branch("Feature B");
+        var feature3 = develop.branch("Feature C");
+        feature1.commit("Branch Feature A Starts");
+        var feature1A = feature1.branch("Feature A1");
+        var feature1B = feature1.branch("Feature A2");
+        var feature1C = feature1.branch("Feature A3");
+        feature1C.commit("A3 Work");
+        feature1A.commit("A1 Work");
+        feature1B.commit("A2 work");
+        feature1C.commit("A3 Work");
+        feature1B.commit("A2 work");
+        feature1A.commit("A1 Work");
+        feature1B.commit("A2 work");
+        feature1A.commit("A1 Work");
+        feature1B.commit({message:"A2 Done", tag:"A2 QA Starts"});
+        feature1B.commit("A2 bug fix");
+        feature1C.commit("A3 Work");
+        feature1A.commit({message:"A1 Done", tag:"A1 QA Starts"});
+        feature1B.commit("A2 bug fix");
+        feature1A.commit("A1 bug fix");
+        feature1C.commit("A3 Work");
+        feature1A.commit("A1 bug fix");
+        feature1A.commit({message: "A1 bug fix", tag:"A1 QA Passed"});
+        feature1A.merge(feature1);
+        feature1C.commit("A3 Work");
+        feature1B.commit({message:"A2 bug fix", tag:"A2 QA Passed"});
+        feature1B.merge(feature1);
+        feature1C.commit("A3 Work");
+        feature1.merge(develop);
+        develop.merge(release, {tag: "Thursday Release 1"});
+        release.commit("Regression QA Bug Fix");
+        release.commit("Regression QA Bug Fix");
+        release.commit({message:"Regression QA Passed", tag:"Submit to app store"});
+        release.merge(develop);
+        release.merge(master);
+        develop.merge(feature1);
+        develop.merge(feature2);
+        develop.merge(feature3);
+        feature1.merge(feature1C);
+
+        feature2.commit("Feature B1");
+        feature3.commit("Feature C1");
+        feature1.commit("Feature A2");
+        feature1C.commit("A3 Work");
+        feature2.commit("Feature B2");
+        feature3.commit("Feature C2");
+        feature1C.commit("A3 Work");
+        feature1.commit("Feature A3");
+        feature2.commit("Feature B3");
+        feature3.commit("Feature C3");
+        feature1C.commit("A3 Work");
+
+    }
+
+</script>
+</html>
